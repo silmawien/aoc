@@ -3,7 +3,7 @@ import re
 with open(0) as f:
     lines, movestr = f.read().split("\n\n")
     b = lines.split("\n")
-    moves = re.findall(r"\d+[LRE]", movestr)
+    moves = re.findall(r"(\d+)([LR]?)", movestr)
 
 
 seams = []
@@ -27,13 +27,13 @@ def step(p, d):
 #print('\n'.join(b), moves)
 w, h = len(b[0]), len(b)
 ds = [(0, 1), (1, 0), (0, -1), (-1, 0)]
-turns = { "L": -1, "R": 1, "E": 0 }
+turns = { "L": -1, "R": 1 }
 
 s = (0, b[0].index("."), 0)
 
-for m in moves:
-    steps = int(m[0:-1])
-    turn = turns[m[-1]]
+for m, t in moves:
+    steps = int(m)
+    turn = turns[t] if t else 0
     d = ds[s[2]]
     p = s[0:2]
     for i in range(steps):
@@ -60,9 +60,9 @@ def step2(s):
     return (s[0] + d[0], s[1] + d[1], s[2])
 
 s = (0, b[0].index("."), 0)
-for m in moves:
-    steps = int(m[0:-1])
-    turn = turns[m[-1]]
+for m, t in moves:
+    steps = int(m)
+    turn = turns[t] if t else 0
     p = s[0:2]
     f = s[2]
     for i in range(steps):
